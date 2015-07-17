@@ -1,0 +1,24 @@
+{
+  "name": "susi-nodejs",
+  "version": "0.1.2",
+  "description": "A nodejs client for SUSI",
+  "main": "susi.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/trusch/susi-nodejs.git"
+  },
+  "keywords": [
+    "susi",
+    "appserver",
+    "iot"
+  ],
+  "author": "Tino Rusch <tino.rusch@webvariants.de>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/trusch/susi-nodejs/issues"
+  },
+  "homepage": "https://github.com/trusch/susi-nodejs#readme"
+}
