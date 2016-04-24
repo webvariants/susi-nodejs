@@ -27,10 +27,10 @@ function Susi(host,port,cert,key,cb){
 
     var reregister = function(){
         for(topic in _consumerTopicCounter){
-            _socket.write(JSON.stringify({type: 'registerConsumer',data:{topic: topic}}));
+            _socket.write(JSON.stringify({type: 'registerConsumer',data:{topic: topic}})+'\n');
         }
         for(topic in _processorTopicCounter){
-            _socket.write(JSON.stringify({type: 'registerProcessor',data:{topic: topic}}));
+            _socket.write(JSON.stringify({type: 'registerProcessor',data:{topic: topic}})+'\n');
         }
     };
 
@@ -95,7 +95,7 @@ function Susi(host,port,cert,key,cb){
             return false;
         }
         evt.id = evt.id || generateId();
-        _socket.write(JSON.stringify({type:'publish',data: evt}));
+        _socket.write(JSON.stringify({type:'publish',data: evt})+'\n');
         console.log('wrote publish');
         if(finishCallback){
             _finishCallbacks[evt.id] = finishCallback;
@@ -114,14 +114,14 @@ function Susi(host,port,cert,key,cb){
             publishProcess.next++;
             processors[next](evt);
         }else{
-            _socket.write(JSON.stringify({type:'ack',data: evt}));
+            _socket.write(JSON.stringify({type:'ack',data: evt})+'\n');
             delete(_publishProcesses[evt.id]);
         }
     };
 
     self.dismiss = function(evt){
         if(_publishProcesses[evt.id]){
-            _socket.write(JSON.stringify({type:'dismiss',data: evt}));
+            _socket.write(JSON.stringify({type:'dismiss',data: evt})+'\n');
             delete(_publishProcesses[evt.id]);
         }
     };
@@ -136,7 +136,7 @@ function Susi(host,port,cert,key,cb){
         _consumerTopicCounter[topic] = _consumerTopicCounter[topic] || 0;
         _consumerTopicCounter[topic]++;
         if(_consumerTopicCounter[topic] == 1){
-            _socket.write(JSON.stringify({type: 'registerConsumer',data:{topic: topic}}));
+            _socket.write(JSON.stringify({type: 'registerConsumer',data:{topic: topic}})+'\n');
         }
         return obj.id;
     };
@@ -151,7 +151,7 @@ function Susi(host,port,cert,key,cb){
         _processorTopicCounter[topic] = _processorTopicCounter[topic] || 0;
         _processorTopicCounter[topic]++;
         if(_processorTopicCounter[topic] == 1){
-            _socket.write(JSON.stringify({type: 'registerProcessor',data:{topic: topic}}));
+            _socket.write(JSON.stringify({type: 'registerProcessor',data:{topic: topic}})+'\n');
         }
         return obj.id;
     };
@@ -162,7 +162,7 @@ function Susi(host,port,cert,key,cb){
                 var consumer = _consumers.splice(i,1);
                 _consumerTopicCounter[consumer.topic]--;
                 if(_consumerTopicCounter[consumer.topic] === 0){
-                    _socket.write(JSON.stringify({type: 'unregisterConsumer', data: {topic: consumer.topic}}));
+                    _socket.write(JSON.stringify({type: 'unregisterConsumer', data: {topic: consumer.topic}})+'\n');
                     delete(_consumerTopicCounter[consumer.topic]);
                 }
                 break;
@@ -176,7 +176,7 @@ function Susi(host,port,cert,key,cb){
                 var processor = _processors.splice(i,1);
                 _processorTopicCounter[processor.topic]--;
                 if(_processorTopicCounter[processor.topic] === 0){
-                    _socket.write(JSON.stringify({type: 'unregisterProcessor', data: {topic: processor.topic}}));
+                    _socket.write(JSON.stringify({type: 'unregisterProcessor', data: {topic: processor.topic}})+'\n');
                     delete(_processorTopicCounter[processor.topic]);
                 }
                 break;
