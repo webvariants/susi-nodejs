@@ -17,7 +17,7 @@ function Susi(host,port,cert,key,cb){
     var keyPem = fs.readFileSync(key, encoding='ascii');
     var certPem = fs.readFileSync(cert, encoding='ascii');
     var options = {
-        key:keyPem, 
+        key:keyPem,
         cert:certPem,
         rejectUnauthorized: false
     };
@@ -78,11 +78,11 @@ function Susi(host,port,cert,key,cb){
         _socket.on('error',function(){
             console.log('error connecting susi...');
             setTimeout(initSocket,500);
-        }); 
+        });
         _socket.on('close',function(){
             console.log('error connecting susi...');
             setTimeout(initSocket,500);
-        });        
+        });
     };
     initSocket();
 
@@ -96,6 +96,7 @@ function Susi(host,port,cert,key,cb){
         }
         evt.id = evt.id || generateId();
         _socket.write(JSON.stringify({type:'publish',data: evt}));
+        console.log('wrote publish');
         if(finishCallback){
             _finishCallbacks[evt.id] = finishCallback;
         }
