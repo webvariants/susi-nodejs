@@ -96,7 +96,6 @@ function Susi(host,port,cert,key,cb){
         }
         evt.id = evt.id || generateId();
         _socket.write(JSON.stringify({type:'publish',data: evt})+'\n');
-        console.log('wrote publish');
         if(finishCallback){
             _finishCallbacks[evt.id] = finishCallback;
         }
